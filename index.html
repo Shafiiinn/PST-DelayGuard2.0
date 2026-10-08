@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PST-DelayGuard - Supply Chain Intelligence Platform</title>
+  <meta name="description" content="AI-powered supply chain intelligence with ML delay prediction, live shipment tracking, analytics and route monitoring.">
+  <meta name="keywords" content="supply chain intelligence, delay prediction, logistics AI, shipment tracker, route monitor">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="dark-theme">
+  <div class="bg-orb orb-primary"></div>
+  <div class="bg-orb orb-secondary"></div>
+  <div class="bg-orb orb-tertiary"></div>
+  <div class="bg-grid-pattern"></div>
+
+  <div class="app-container">
+
+    <!-- NAVBAR -->
+    <header class="navbar">
+      <div class="brand">
+        <div class="brand-icon-wrapper">
+          <svg class="brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            <path d="M12 8v4"/><path d="M12 16h.01"/>
+          </svg>
+          <span class="brand-pulse"></span>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">PST-Delay<span class="highlight">Guard</span></span>
+          <span class="brand-tag">Supply Chain Intelligence v3.0</span>
+        </div>
+      </div>
+
+      <nav class="main-tabs" role="tablist" aria-label="Main Navigation">
+        <button class="tab-btn active" data-tab="delay" role="tab" aria-selected="true" id="tab-delay">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+          Delay Predictor
+        </button>
+        <button class="tab-btn" data-tab="analytics" role="tab" aria-selected="false" id="tab-analytics">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+          Analytics
+        </button>
+        <button class="tab-btn" data-tab="tracker" role="tab" aria-selected="false" id="tab-tracker">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"></circle></svg>
+          Shipment Tracker
+        </button>
+        <button class="tab-btn" data-tab="routes" role="tab" aria-selected="false" id="tab-routes">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+          Route Monitor
+        </button>
+      </nav>
+
+      <div class="header-actions">
+        <button id="demoScenarioBtn" class="btn btn-secondary demo-btn" title="Load high-risk demo scenario">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          <span>Demo</span>
+          <span class="badge-pill">High Risk</span>
+        </button>
+        <button id="soundToggleBtn" class="btn btn-icon" title="Toggle Sound Feedback" aria-label="Toggle sound">
+          <svg id="soundIcon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="hero-section">
+      <div class="hero-badge"><span class="pulse-dot"></span>AI-Powered Supply Chain Intelligence</div>
+      <h1 class="hero-title">Predict. Track. <span class="hero-accent">Optimize.</span></h1>
+      <p class="hero-subtitle">End-to-end supply chain visibility with ML-driven delay prediction, real-time shipment tracking, and intelligent route monitoring</p>
+      <div class="kpi-ticker">
+        <div class="kpi-ticker-item"><span class="kpi-value" id="tickerShipments">1,247</span><span class="kpi-label">Active Shipments</span></div>
+        <div class="kpi-divider"></div>
+        <div class="kpi-ticker-item"><span class="kpi-value kpi-risk" id="tickerAtRisk">38</span><span class="kpi-label">At Risk</span></div>
+        <div class="kpi-divider"></div>
+        <div class="kpi-ticker-item"><span class="kpi-value kpi-good" id="tickerOnTime">94.2<span class="kpi-unit">%</span></span><span class="kpi-label">On-Time Rate</span></div>
+        <div class="kpi-divider"></div>
+        <div class="kpi-ticker-item"><span class="kpi-value" id="tickerRoutes">16</span><span class="kpi-label">Active Routes</span></div>
+      </div>
+    </section>
+
+    <!-- Quick Presets Bar -->
+    <div class="presets-container" id="presetsBar">
+      <span class="presets-label">Quick Presets:</span>
+      <div class="preset-chips">
+        <button class="preset-chip" data-preset="storm">&#9928;&#65039; Stormy Express</button>
+        <button class="preset-chip" data-preset="rush">&#128665; Rush Hour Standard</button>
+        <button class="preset-chip" data-preset="clear">&#9728;&#65039; Smooth Local Clear</button>
+        <button class="preset-chip" data-preset="economy">&#128230; Long Haul Economy</button>
+      </div>
+    </div>
+
+    <!-- TAB 1: DELAY PREDICTOR -->
+    <main class="tab-content active" id="tab-content-delay">
+      <div class="dashboard-grid">
+        <section class="card input-card">
+          <div class="card-header">
+            <div class="card-title-group">
+              <div class="card-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+              </div>
+              <div>
+                <h2 class="card-title">Delivery Details</h2>
+                <p class="card-subtitle">Configure environmental &amp; operational parameters</p>
+              </div>
+            </div>
+            <button id="resetFormBtn" class="btn btn-ghost btn-sm" title="Reset all fields to defaults">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+              Reset
+            </button>
+          </div>
+          <form id="delayForm" class="form-body" onsubmit="return false;">
+            <div class="form-group">
+              <div class="label-row">
+                <label for="distanceInput" class="form-label"><span class="label-icon">&#128205;</span> 1. Delivery Distance</label>
+                <span class="distance-badge" id="distanceDisplay">18 km</span>
+              </div>
+              <div class="distance-control-wrap">
+                <input type="range" id="distanceSlider" min="1" max="60" value="18" step="1" class="slider-input">
+                <div class="number-input-wrap">
+                  <input type="number" id="distanceInput" min="1" max="150" value="18" class="form-control" placeholder="18">
+                  <span class="input-unit">km</span>
+                </div>
+              </div>
+              <div class="input-hint"><span>Short (&lt;5km)</span><span>Medium (5-15km)</span><span>Long (15-30km)</span><span>Very Long (&gt;30km)</span></div>
+            </div>
+            <div class="form-group">
+              <label class="form-label"><span class="label-icon">&#128680;</span> 2. Traffic Level</label>
+              <div class="segmented-control" role="radiogroup" aria-label="Traffic Level">
+                <label class="segment-option"><input type="radio" name="traffic" value="low"><span class="segment-content"><span class="traffic-dot low"></span><span class="opt-text">Low</span><span class="opt-score">+5</span></span></label>
+                <label class="segment-option"><input type="radio" name="traffic" value="medium"><span class="segment-content"><span class="traffic-dot med"></span><span class="opt-text">Medium</span><span class="opt-score">+15</span></span></label>
+                <label class="segment-option"><input type="radio" name="traffic" value="high" checked><span class="segment-content"><span class="traffic-dot high"></span><span class="opt-text">High</span><span class="opt-score">+30</span></span></label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label"><span class="label-icon">&#9925;</span> 3. Weather Condition</label>
+              <div class="card-grid-select weather-select" role="radiogroup" aria-label="Weather">
+                <label class="grid-card-option"><input type="radio" name="weather" value="clear"><span class="grid-card-content"><span class="opt-emoji">&#9728;&#65039;</span><span class="opt-title">Clear</span><span class="opt-score-sub">+0 pts</span></span></label>
+                <label class="grid-card-option"><input type="radio" name="weather" value="cloudy"><span class="grid-card-content"><span class="opt-emoji">&#9925;</span><span class="opt-title">Cloudy</span><span class="opt-score-sub">+5 pts</span></span></label>
+                <label class="grid-card-option"><input type="radio" name="weather" value="rain" checked><span class="grid-card-content"><span class="opt-emoji">&#127783;&#65039;</span><span class="opt-title">Rain</span><span class="opt-score-sub">+20 pts</span></span></label>
+                <label class="grid-card-option"><input type="radio" name="weather" value="storm"><span class="grid-card-content"><span class="opt-emoji">&#9928;&#65039;</span><span class="opt-title">Storm</span><span class="opt-score-sub">+35 pts</span></span></label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label"><span class="label-icon">&#128757;</span> 4. Courier Workload</label>
+              <div class="segmented-control" role="radiogroup" aria-label="Courier Workload">
+                <label class="segment-option"><input type="radio" name="courier" value="low"><span class="segment-content"><span class="workload-bars low"><span></span><span></span><span></span></span><span class="opt-text">Low</span><span class="opt-score">+5</span></span></label>
+                <label class="segment-option"><input type="radio" name="courier" value="medium"><span class="segment-content"><span class="workload-bars med"><span></span><span></span><span></span></span><span class="opt-text">Medium</span><span class="opt-score">+15</span></span></label>
+                <label class="segment-option"><input type="radio" name="courier" value="high" checked><span class="segment-content"><span class="workload-bars high"><span></span><span></span><span></span></span><span class="opt-text">High</span><span class="opt-score">+25</span></span></label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label"><span class="label-icon">&#128640;</span> 5. Delivery Service Tier</label>
+              <div class="tier-select" role="radiogroup" aria-label="Delivery Type">
+                <label class="tier-option"><input type="radio" name="deliveryType" value="express"><span class="tier-content"><div class="tier-info"><span class="tier-name">&#9889; Express</span><span class="tier-desc">Priority handling</span></div><span class="tier-badge discount">-10 pts</span></span></label>
+                <label class="tier-option"><input type="radio" name="deliveryType" value="standard" checked><span class="tier-content"><div class="tier-info"><span class="tier-name">&#128230; Standard</span><span class="tier-desc">Standard queue</span></div><span class="tier-badge neutral">0 pts</span></span></label>
+                <label class="tier-option"><input type="radio" name="deliveryType" value="economy"><span class="tier-content"><div class="tier-info"><span class="tier-name">&#128034; Economy</span><span class="tier-desc">Batched routing</span></div><span class="tier-badge penalty">+10 pts</span></span></label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label"><span class="label-icon">&#128225;</span> 6. Current Delivery Status</label>
+              <div class="status-grid" role="radiogroup" aria-label="Current Status">
+                <label class="status-option"><input type="radio" name="status" value="processing"><span class="status-content"><span class="status-icon">&#128203;</span><span class="status-name">Processing</span><span class="status-pts">+5</span></span></label>
+                <label class="status-option"><input type="radio" name="status" value="dispatched"><span class="status-content"><span class="status-icon">&#127991;&#65039;</span><span class="status-name">Dispatched</span><span class="status-pts">+5</span></span></label>
+                <label class="status-option"><input type="radio" name="status" value="in_transit"><span class="status-content"><span class="status-icon">&#128666;</span><span class="status-name">In Transit</span><span class="status-pts">+10</span></span></label>
+                <label class="status-option"><input type="radio" name="status" value="out_for_delivery" checked><span class="status-content"><span class="status-icon">&#128757;</span><span class="status-name">Out for Delivery</span><span class="status-pts">+15</span></span></label>
+              </div>
+            </div>
+            <div class="form-actions">
+              <button type="button" id="predictBtn" class="btn btn-primary btn-lg pulse-glow">
+                <span class="btn-shine"></span>
+                <span class="btn-icon-text"><span class="magic-icon">&#128302;</span><span class="btn-label">Predict Delay</span></span>
+                <svg class="arrow-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </button>
+            </div>
+          </form>
+        </section>
+
+        <div class="results-column">
+          <section class="card result-card" id="resultCard">
+            <div class="card-header borderless">
+              <div class="card-title-group">
+                <span class="live-pill" id="livePill">Live Prediction</span>
+                <h2 class="card-title" id="predictionHeaderTitle">Delay Assessment</h2>
+              </div>
+              <div class="timestamp-tag" id="predictionTimestamp">Awaiting Run</div>
+            </div>
+            <div class="prediction-main-body">
+              <div class="gauge-container">
+                <div class="circular-progress-wrap">
+                  <svg class="progress-ring" width="190" height="190" viewBox="0 0 190 190">
+                    <circle class="progress-ring-track" cx="95" cy="95" r="80" stroke-width="14"></circle>
+                    <circle id="progressRingBar" class="progress-ring-bar" cx="95" cy="95" r="80" stroke-width="14"></circle>
+                  </svg>
+                  <div class="gauge-inner-content">
+                    <div class="gauge-percentage-val"><span id="probNumber" class="count-num">82</span><span class="pct-sign">%</span></div>
+                    <span class="gauge-label">Delay Probability</span>
+                  </div>
+                </div>
+              </div>
+              <div class="prediction-stats-block">
+                <div id="riskLevelBadge" class="risk-badge risk-high">
+                  <span class="risk-indicator-dot"></span>
+                  <span id="riskLevelText" class="risk-title">HIGH DELAY RISK</span>
+                </div>
+                <div class="stat-highlight-box">
+                  <div class="stat-label">Estimated Delay</div>
+                  <div class="stat-value-group"><span id="estimatedDelayMin" class="stat-number count-num">35</span><span class="stat-unit">minutes</span></div>
+                  <div class="stat-subtext" id="etaSubtext">Added to standard transit window</div>
+                </div>
+                <div class="mini-score-bar">
+                  <div class="mini-score-labels"><span>Computed Delay Score</span><span id="totalScoreVal" class="score-bold">110 pts</span></div>
+                  <div class="score-track"><div id="scoreTrackFill" class="score-fill" style="width: 85%;"></div></div>
+                  <div class="score-thresholds"><span>0 (Low)</span><span>25</span><span>50</span><span>75</span><span>145 (Max)</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="explanation-box" id="explanationBox">
+              <div class="explanation-header">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                <span>Driver Impact Analysis</span>
+              </div>
+              <p id="explanationText" class="explanation-content">Heavy traffic and rain are the main factors increasing the predicted delay.</p>
+            </div>
+            <div class="recommendation-card" id="recommendationCard">
+              <div class="rec-icon-wrap" id="recIconWrap"><span id="recEmoji">&#9888;&#65039;</span></div>
+              <div class="rec-content">
+                <span class="rec-label">Smart Recommendation</span>
+                <p id="recommendationText" class="rec-text">Expect a significant delay and monitor the delivery status closely.</p>
+              </div>
+            </div>
+          </section>
+
+          <section class="card factors-card">
+            <div class="card-header">
+              <div class="card-title-group">
+                <div class="card-icon mini"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg></div>
+                <h3 class="card-title">Delay Factors Breakdown</h3>
+              </div>
+              <span class="factors-badge">Multi-Factor Scoring</span>
+            </div>
+            <div class="factors-list">
+              <div class="factor-item" id="factorTraffic">
+                <div class="factor-meta"><div class="factor-name-group"><span class="factor-icon">&#128680;</span><span class="factor-title">Traffic Contribution</span></div><div class="factor-val-group"><span id="trafficScoreLabel" class="factor-score-label">High (+30 pts)</span><span id="trafficPctLabel" class="factor-pct">27%</span></div></div>
+                <div class="progress-bar-bg"><div id="trafficBarFill" class="progress-bar-fill fill-traffic" style="width: 85%;"></div></div>
+              </div>
+              <div class="factor-item" id="factorWeather">
+                <div class="factor-meta"><div class="factor-name-group"><span class="factor-icon">&#127783;&#65039;</span><span class="factor-title">Weather Impact</span></div><div class="factor-val-group"><span id="weatherScoreLabel" class="factor-score-label">Rain (+20 pts)</span><span id="weatherPctLabel" class="factor-pct">18%</span></div></div>
+                <div class="progress-bar-bg"><div id="weatherBarFill" class="progress-bar-fill fill-weather" style="width: 57%;"></div></div>
+              </div>
+              <div class="factor-item" id="factorCourier">
+                <div class="factor-meta"><div class="factor-name-group"><span class="factor-icon">&#128757;</span><span class="factor-title">Courier Workload</span></div><div class="factor-val-group"><span id="courierScoreLabel" class="factor-score-label">High (+25 pts)</span><span id="courierPctLabel" class="factor-pct">23%</span></div></div>
+                <div class="progress-bar-bg"><div id="courierBarFill" class="progress-bar-fill fill-courier" style="width: 71%;"></div></div>
+              </div>
+              <div class="factor-item" id="factorDistance">
+                <div class="factor-meta"><div class="factor-name-group"><span class="factor-icon">&#128205;</span><span class="factor-title">Distance Impact</span></div><div class="factor-val-group"><span id="distanceScoreLabel" class="factor-score-label">15-30 km (+20 pts)</span><span id="distancePctLabel" class="factor-pct">18%</span></div></div>
+                <div class="progress-bar-bg"><div id="distanceBarFill" class="progress-bar-fill fill-distance" style="width: 66%;"></div></div>
+              </div>
+              <div class="factor-modifiers-row">
+                <div class="modifier-chip" id="tierModifierChip"><span class="mod-label">Tier:</span><span id="modTierVal" class="mod-val">Standard (0 pts)</span></div>
+                <div class="modifier-chip" id="statusModifierChip"><span class="mod-label">Status:</span><span id="modStatusVal" class="mod-val">Out for Delivery (+15 pts)</span></div>
+              </div>
+            </div>
+          </section>
+
+          <section class="card history-card">
+            <div class="card-header">
+              <div class="card-title-group">
+                <div class="card-icon mini"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></div>
+                <div><h3 class="card-title">Recent Predictions</h3><p class="card-subtitle">Stored locally in browser session</p></div>
+              </div>
+              <button id="clearHistoryBtn" class="btn btn-ghost btn-xs text-muted" title="Clear saved predictions">Clear All</button>
+            </div>
+            <div id="historyList" class="history-list">
+              <div class="empty-history-placeholder"><span class="placeholder-icon">&#128203;</span><p>No predictions yet. Click "Predict Delay" to save results.</p></div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <!-- TAB 2: ANALYTICS -->
+    <main class="tab-content" id="tab-content-analytics">
+      <div class="analytics-kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-card-icon" style="background:rgba(99,102,241,0.15);border-color:rgba(99,102,241,0.3)"><svg viewBox="0 0 24 24" fill="none" stroke="#818cf8" stroke-width="2" width="20" height="20"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg></div>
+          <div class="kpi-card-body"><div class="kpi-card-value">1,247</div><div class="kpi-card-label">Total Shipments</div><div class="kpi-card-trend up">&#8593; 12.3% vs last month</div></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-card-icon" style="background:rgba(16,185,129,0.15);border-color:rgba(16,185,129,0.3)"><svg viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2" width="20" height="20"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+          <div class="kpi-card-body"><div class="kpi-card-value">94.2%</div><div class="kpi-card-label">On-Time Delivery Rate</div><div class="kpi-card-trend up">&#8593; 2.1% vs last month</div></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-card-icon" style="background:rgba(239,68,68,0.15);border-color:rgba(239,68,68,0.3)"><svg viewBox="0 0 24 24" fill="none" stroke="#EF4444" stroke-width="2" width="20" height="20"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg></div>
+          <div class="kpi-card-body"><div class="kpi-card-value">38</div><div class="kpi-card-label">Delayed / At Risk</div><div class="kpi-card-trend down">&#8595; 8 fewer than last week</div></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-card-icon" style="background:rgba(245,158,11,0.15);border-color:rgba(245,158,11,0.3)"><svg viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2" width="20" height="20"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></div>
+          <div class="kpi-card-body"><div class="kpi-card-value">23<span style="font-size:1rem">m</span></div><div class="kpi-card-label">Avg Delay Duration</div><div class="kpi-card-trend up">&#8593; 3m reduction this week</div></div>
+        </div>
+      </div>
+
+      <div class="charts-grid">
+        <div class="card chart-card">
+          <div class="card-header">
+            <div class="card-title-group">
+              <div class="card-icon mini"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg></div>
+              <div><h3 class="card-title">Weekly Delay Trend</h3><p class="card-subtitle">Last 7 days — delay % per day</p></div>
+            </div>
+            <div class="chart-legend"><span class="legend-dot" style="background:#6366F1;"></span><span>Delay %</span></div>
+          </div>
+          <canvas id="weeklyTrendChart" class="chart-canvas" height="180"></canvas>
+        </div>
+        <div class="card chart-card">
+          <div class="card-header">
+            <div class="card-title-group">
+              <div class="card-icon mini"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle></svg></div>
+              <div><h3 class="card-title">Risk Distribution</h3><p class="card-subtitle">Current shipment risk levels</p></div>
+            </div>
+          </div>
+          <div class="donut-wrapper">
+            <canvas id="riskDonutChart" class="donut-canvas" width="180" height="180"></canvas>
+            <div class="donut-legend">
+              <div class="donut-legend-item"><span class="dleg-dot" style="background:#10B981"></span><span>Low Risk</span><strong id="dlegLow">62%</strong></div>
+              <div class="donut-legend-item"><span class="dleg-dot" style="background:#F59E0B"></span><span>Medium</span><strong id="dlegMed">24%</strong></div>
+              <div class="donut-legend-item"><span class="dleg-dot" style="background:#F97316"></span><span>High</span><strong id="dlegHigh">10%</strong></div>
+              <div class="donut-legend-item"><span class="dleg-dot" style="background:#EF4444"></span><span>Critical</span><strong id="dlegCrit">4%</strong></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="charts-grid">
+        <div class="card chart-card">
+          <div class="card-header">
+            <div class="card-title-group">
+              <div class="card-icon mini"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg></div>
+              <div><h3 class="card-title">Top Delay Causes</h3><p class="card-subtitle">Frequency of contributing factors</p></div>
+            </div>
+          </div>
+          <canvas id="causesChart" class="chart-canvas" height="200"></canvas>
+        </div>
+        <div class="card chart-card">
+          <div class="card-header">
+            <div class="card-title-group">
+              <div class="card-icon mini"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></div>
+              <div><h3 class="card-title">Supply Chain Health</h3><p class="card-subtitle">Overall performance score</p></div>
+            </div>
+          </div>
+          <div class="health-score-display">
+            <div class="health-ring-wrap">
+              <svg class="health-ring" viewBox="0 0 120 120" width="160" height="160">
+                <circle class="health-ring-bg" cx="60" cy="60" r="50" stroke-width="10"></circle>
+                <circle id="healthRingFill" class="health-ring-fill" cx="60" cy="60" r="50" stroke-width="10"></circle>
+              </svg>
+              <div class="health-center"><span id="healthScore" class="health-num">87</span><span class="health-unit">/ 100</span></div>
+            </div>
+            <div class="health-sub-metrics">
+              <div class="health-sub-item"><span class="hsi-label">Route Efficiency</span><div class="hsi-bar"><div class="hsi-fill" style="width:91%;background:#10B981;"></div></div><span class="hsi-val">91%</span></div>
+              <div class="health-sub-item"><span class="hsi-label">Inventory Availability</span><div class="hsi-bar"><div class="hsi-fill" style="width:78%;background:#6366F1;"></div></div><span class="hsi-val">78%</span></div>
+              <div class="health-sub-item"><span class="hsi-label">Courier Performance</span><div class="hsi-bar"><div class="hsi-fill" style="width:85%;background:#06B6D4;"></div></div><span class="hsi-val">85%</span></div>
+              <div class="health-sub-item"><span class="hsi-label">Weather Risk Exposure</span><div class="hsi-bar"><div class="hsi-fill" style="width:62%;background:#F59E0B;"></div></div><span class="hsi-val">62%</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card chart-card full-width-card">
+        <div class="card-header">
+          <div class="card-title-group">
+            <div class="card-icon mini"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg></div>
+            <div><h3 class="card-title">Delay Heatmap - Hourly Activity</h3><p class="card-subtitle">Delay frequency by hour of day and day of week</p></div>
+          </div>
+          <div class="heatmap-scale"><span>Low</span><div class="heatmap-gradient"></div><span>High</span></div>
+        </div>
+        <div id="heatmapGrid" class="heatmap-grid"></div>
+        <div class="heatmap-footer">
+          <div class="heatmap-y-labels" id="heatmapDayLabels"></div>
+          <div class="heatmap-x-labels" id="heatmapHourLabels"></div>
+        </div>
+      </div>
+    </main>
+
+    <!-- TAB 3: SHIPMENT TRACKER -->
+    <main class="tab-content" id="tab-content-tracker">
+      <div class="tracker-header">
+        <div class="tracker-search-bar">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          <input type="text" id="trackerSearch" placeholder="Search shipment ID, destination, product..." class="tracker-search-input">
+        </div>
+        <div class="tracker-filter-chips">
+          <button class="filter-chip active" data-filter="all">All</button>
+          <button class="filter-chip" data-filter="on_time">On Time</button>
+          <button class="filter-chip" data-filter="at_risk">At Risk</button>
+          <button class="filter-chip" data-filter="delayed">Delayed</button>
+          <button class="filter-chip" data-filter="critical">Critical</button>
+        </div>
+        <button id="refreshTrackerBtn" class="btn btn-secondary btn-sm">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
+          Refresh Live
+        </button>
+      </div>
+      <div id="shipmentCardsGrid" class="shipment-cards-grid"></div>
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title-group">
+            <div class="card-icon mini"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg></div>
+            <div><h3 class="card-title">Live Activity Feed</h3><p class="card-subtitle">Real-time supply chain events</p></div>
+          </div>
+          <span class="live-pill">Live</span>
+        </div>
+        <div id="activityFeed" class="activity-feed"></div>
+      </div>
+    </main>
+
+    <!-- TAB 4: ROUTE MONITOR -->
+    <main class="tab-content" id="tab-content-routes">
+      <div class="route-kpi-row">
+        <div class="route-kpi-item"><span class="route-kpi-val">16</span><span class="route-kpi-label">Active Routes</span></div>
+        <div class="route-kpi-item"><span class="route-kpi-val kpi-good">14</span><span class="route-kpi-label">Clear</span></div>
+        <div class="route-kpi-item"><span class="route-kpi-val" style="color:#F59E0B">1</span><span class="route-kpi-label">Congested</span></div>
+        <div class="route-kpi-item"><span class="route-kpi-val kpi-risk">1</span><span class="route-kpi-label">Blocked</span></div>
+      </div>
+      <div class="routes-grid">
+        <div class="card route-map-card">
+          <div class="card-header">
+            <div class="card-title-group">
+              <div class="card-icon mini"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="3 11 22 2 13 21 11 13 3 11"></polygon></svg></div>
+              <div><h3 class="card-title">Network Topology</h3><p class="card-subtitle">Live route status visualization</p></div>
+            </div>
+            <div class="route-legend">
+              <span><span class="route-leg-dot" style="background:#10B981"></span>Clear</span>
+              <span><span class="route-leg-dot" style="background:#F59E0B"></span>Congested</span>
+              <span><span class="route-leg-dot" style="background:#EF4444"></span>Blocked</span>
+            </div>
+          </div>
+          <canvas id="networkCanvas" class="network-canvas" width="500" height="340"></canvas>
+        </div>
+        <div class="route-details-panel">
+          <div class="card">
+            <div class="card-header"><h3 class="card-title">Route Status</h3></div>
+            <div id="routeStatusList" class="route-status-list"></div>
+          </div>
+          <div class="card disruption-sim-card">
+            <div class="card-header">
+              <div class="card-title-group">
+                <div class="card-icon mini" style="background:rgba(239,68,68,0.12);border-color:rgba(239,68,68,0.3)"><svg viewBox="0 0 24 24" fill="none" stroke="#EF4444" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg></div>
+                <h3 class="card-title">Disruption Simulator</h3>
+              </div>
+            </div>
+            <div class="disruption-controls">
+              <label class="form-label" style="font-size:0.8rem;">Select Scenario</label>
+              <select id="disruptionScenario" class="disruption-select">
+                <option value="normal">Normal Operations</option>
+                <option value="main_blocked">Main Route Blocked</option>
+                <option value="heavy_traffic">Heavy Traffic on Highways</option>
+                <option value="weather_storm">Severe Storm - North Region</option>
+                <option value="demand_spike">Demand Spike - 2x Volume</option>
+              </select>
+              <button id="applyDisruptionBtn" class="btn btn-primary" style="width:100%;margin-top:0.75rem;">Apply Scenario</button>
+              <div id="disruptionResult" class="disruption-result" style="display:none;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title-group">
+            <div class="card-icon mini"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg></div>
+            <div><h3 class="card-title">Route Performance Table</h3><p class="card-subtitle">Key metrics per active route</p></div>
+          </div>
+        </div>
+        <div class="route-table-wrapper">
+          <table class="route-table" id="routeTable">
+            <thead><tr><th>Route ID</th><th>Origin to Destination</th><th>Distance</th><th>Avg Transit</th><th>Delay Rate</th><th>Status</th><th>Last Updated</th></tr></thead>
+            <tbody id="routeTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+
+    <footer class="app-footer">
+      <div class="footer-content">
+        <div class="footer-left"><span class="footer-logo">&#9889; PST-DelayGuard</span><span class="separator">&#8226;</span><span>Supply Chain Intelligence Platform</span></div>
+        <div class="footer-right"><span class="status-indicator-live"><span class="status-dot"></span> System Operational</span><span class="separator">&#8226;</span><span>Prototype &middot; Simulated Data</span></div>
+      </div>
+    </footer>
+  </div>
+
+  <div id="toastContainer" class="toast-container"></div>
+  <script src="app.js"></script>
+</body>
+</html>
